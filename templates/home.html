@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+{% block content %}
+
+
+    <title>Home</title>
+    <h1>Expenses</h1>
+
+       
+    <div class="row justify-content-center">
+        <table class="w-50 table table-striped text-left">        
+            <thead>
+                <tr>
+                    
+                    <th scope="col" class = "text-left">Name</th>
+                    <th scope="col" class = "text-left">Date</th>
+                    <th scope="col" class = "text-right">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for expense in expenses %}
+                <tr>
+                    
+                    <td class = "text-left">{{expense.name}}</td>
+                    <td class = "text-left">{{expense.date}}</td>
+                    <td class = "text-right">£{{expense.amount}}</td>
+                </tr>          
+
+                {% endfor %}
+
+                
+            </tbody>
+        </table>
+    </div>
+
+    <style>
+        
+    </style>
+
+{% endblock %}

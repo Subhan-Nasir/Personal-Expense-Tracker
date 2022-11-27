@@ -1,94 +1,158 @@
 {% extends "index.html" %}
-{% block content %}
-    <title>{{title}}</title>
-    <div class="container form_custom content-section">
-        <form method = "POST" action = "">
-            {{ form.hidden_tag() }}
-            
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4 text-center"><b> Create an Account</b></legend>
-                <div class = "form-group"> 
-                    {{ form.username.label(class = "form-control-label")}}
-                    {% if form.username.errors %}
-                        {{ form.username(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.username.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.username(class="form-control form-control-lg") }}
-                    {% endif %}
+{% block content%}
 
+<!-- Section: Design Block -->
+<section class="background-radial-gradient overflow-hidden" style="padding-top: 5.5%;">
+  <style>
+    .background-radial-gradient {
+      background-color: hsl(218, 41%, 15%);
+      background-image: radial-gradient(650px circle at 0% 0%,
+          hsl(218, 41%, 35%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%),
+        radial-gradient(1250px circle at 100% 100%,
+          hsl(218, 41%, 45%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%);
+    }
+
+    #radius-shape-1 {
+      height: 220px;
+      width: 220px;
+      top: -60px;
+      left: -130px;
+      background: radial-gradient(#44006b, #ad1fff);
+      overflow: hidden;
+    }
+
+    #radius-shape-2 {
+      border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+      bottom: -60px;
+      right: -110px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(#44006b, #ad1fff);
+      overflow: hidden;
+    }
+
+    .bg-glass {
+      background-color: hsla(0, 0%, 100%, 0.9) !important;
+      backdrop-filter: saturate(200%) blur(25px);
+    }
+  </style>
+
+<div class="container px-4 py-5 px-md-5 text-center text-lg-start ym-5">
+    <div class="row gx-lg-5 align-items-center mb-5" style="align-items:center; justify-content:center">
+       
+        <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+            <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+            <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+
+            <div class="card bg-glass">
+                <div class="card-body px-4 py-5 px-md-5">
+                    <form method = "POST" action = "">  
+                        {{ form.hidden_tag() }}
+                        <fieldset class="form-group">
+                            <legend class="border-bottom mb-2 text-center"><b> Create an Account</b></legend>
+
+                            <div class="form-outline mb-4">
+                                {# {{ form.username.label(class = "form-label")}} #}
+                                {% if form.username.errors %}
+                                    {{ form.username(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.username.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.username(class="form-control", placeholder="Username") }}
+                                {% endif %}
+                        
+                            </div>
+                        
+                            <div class="form-outline mb-4">
+                                {# {{ form.email.label(class = "form-label")}} #}
+                                {% if form.email.errors %}
+                                    {{ form.email(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.email.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.email(class="form-control", placeholder="Email") }}
+                                {% endif %}
+                        
+                            </div>
+                        
+                            <div class="form-outline mb-4">
+                                {# {{ form.password.label(class = "form-label")}} #}
+                                {% if form.password.errors %}
+                                    {{ form.password(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.password.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.password(class="form-control", placeholder="Password") }}
+                                {% endif %}
+                        
+                            </div>
+                        
+                            <div class="form-outline mb-4">
+                                {# {{ form.confirm_password.label(class = "form-label")}} #}
+                                {% if form.confirm_password.errors %}
+                                    {{ form.confirm_password(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.confirm_password.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.confirm_password(class="form-control", placeholder="Confirm Password") }}
+                                {% endif %}
+                        
+                            </div>
+                        
+                            
+                        
+                        </fieldset> 
+                        
+                        <div class="form-group">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col text-center">
+                                        {{ form.submit(class="btn btn-outline-info")}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+
+                        <!-- Register buttons -->
+                        {# <div class="text-center">
+                            <a></p>
+                            
+                        </div> #}
+                        <div class = "border-top pt-3"> 
+                            <small class = "text-muted"> Already have an account? <a class = "ml-2" href="{{ url_for('views.login')}}" >Sign In</a> </small>
+                        </div>
+
+                        
+                    </form>
                 </div>
-                
-                <div class = "form-group"> 
-                    {{ form.email.label(class = "form-control-label")}}
-                    {% if form.email.errors %}
-                        {{ form.email(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.email.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.email(class="form-control form-control-lg") }}
-                    {% endif %}
-
-                </div>
-
-                <div class = "form-group"> 
-                    {{ form.password.label(class = "form-control-label")}}
-                    {% if form.password.errors %}
-                        {{ form.password(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.password.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.password(class="form-control form-control-lg") }}
-                    {% endif %}
-
-                </div>
-
-                <div class = "form-group"> 
-                    {{ form.confirm_password.label(class = "form-control-label")}}
-                    {% if form.confirm_password.errors %}
-                        {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.confirm_password.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.confirm_password(class="form-control form-control-lg") }}
-                    {% endif %}
-
-                </div>
-
-            </fieldset>   
-                     
-            <div class="form-group">                 
-                <div class="container">
-                    <div class="row">
-                        <div class="col text-center">
-                            {{ form.submit(class="btn btn-outline-info")}}                            
-                        </div>
-                    </div>
-                </div>                
             </div>
-            
-
-        </form>
+        </div>
     </div>
+</div>
+</section>
+<!-- Section: Design Block -->
 
-    <div class = "border-top pt-3"> 
-        <small class = "text-muted"> Already have an account? <a class = "ml-2" href="{{ url_for('views.login')}}" >Sign In</a> </small>
-    </div>
-    
-    <style>
-    
-    </style>
 
-{% endblock %}
+{% endblock%}

@@ -1,0 +1,49 @@
+{% extends "index.html" %}
+{% block content %}
+
+
+<title>Home</title>
+
+{% if current_user.is_authenticated %}
+    <h1>User {{current_user.username}} - Expenses:</h1>
+{% else %}
+    <h1>Expenses:</h1>
+{% endif %}
+
+{# <div class="pt-5">
+    <h1>User {{current_user.username}} - Expenses:</h1>
+</div> #}
+
+
+<div class="row justify-content-center pt-5">
+    <table class="w-50 table table-striped text-left">
+        <thead>
+            <tr>
+
+                <th scope="col" class="text-left">Name</th>
+                <th scope="col" class="text-left">Date</th>
+                <th scope="col" class="text-right">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for expense in expenses %}
+            <tr>
+
+                <td class="text-left">{{expense.name}}</td>
+                <td class="text-left">{{expense.date}}</td>
+                <td class="text-right">£{{expense.amount}}</td>
+            </tr>
+
+            {% endfor %}
+
+
+        </tbody>
+    </table>
+</div>
+
+<style>
+
+</style>
+
+{% endblock %}

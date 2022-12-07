@@ -4,23 +4,28 @@
 
 <title>Home</title>
 
-{% if current_user.is_authenticated %}
-    <h1>User {{current_user.username}} - Expenses:</h1>
-{% else %}
-    <h1>Expenses:</h1>
-{% endif %}
+
 
 {# <div class="pt-5">
     <h1>User {{current_user.username}} - Expenses:</h1>
 </div> #}
 
 
-<div class="row justify-content-center pt-5">
+<div class="row justify-content-center pt-5 bg-glass">
+    
+    {% if current_user.is_authenticated %}
+        <legend class="border-bottom mb-4 text-center" style="color:black; font-size: 30px;"><b>{{current_user.username}} - Expenses</b></legend>
+    {% else %}
+        <legend class="border-bottom mb-4 text-center"><b>Example Expenses:</b></legend>
+    {% endif %}
+
+
     <table class="w-50 table table-striped text-left">
         <thead>
             <tr>
 
                 <th scope="col" class="text-left">Name</th>
+                <th scope="col" class="text-left">Category</th>
                 <th scope="col" class="text-left">Date</th>
                 <th scope="col" class="text-right">Amount</th>
             </tr>
@@ -31,7 +36,8 @@
             <tr>
 
                 <td class="text-left">{{expense.name}}</td>
-                <td class="text-left">{{expense.date}}</td>
+                <td class="text-left">{{expense.category}}</td>
+                <td class="text-left">{{expense.date.strftime("%A - %#d  %b  %Y")}}</td>
                 <td class="text-right">£{{expense.amount}}</td>
             </tr>
 
@@ -40,6 +46,107 @@
 
         </tbody>
     </table>
+</div>
+<div class="row pt-5 bg-glass expense-form">
+    {% if form and current_user.is_authenticated %}
+        
+            <form method="POST" action="" style="width:100%" >
+                {{ form.hidden_tag() }}
+                <legend class="border-bottom mb-4 text-center"><b>Add Expense</b></legend>
+                <fieldset class="form-group expense-form-fields con">
+                    
+                    <div class="form-outline mb-4">
+                        {# <div class="ml-2"> {{ form.name.label()}} </div> #}
+                        {% if form.name.errors %}
+                            {{ form.name(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.name.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.name(class="form-control", placeholder="Name") }}
+                        {% endif %}
+
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        {# <div class="ml-2"> {{ form.category.label()}} </div> #}
+                        {% if form.category.errors %}
+                            {{ form.category(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.category.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.category(class="form-control", placeholder="Category") }}
+                        {% endif %}
+
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        {# <div class="ml-2"> {{ form.date.label()}} </div> #}
+                        {% if form.date.errors %}
+                            {{ form.date(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.date.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.date(class="form-control", placeholder="Date") }}
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <div class="form-outline mb-4">
+                        {# <div class="ml-2"> {{ form.amount.label()}} </div> #}
+                        {% if form.amount.errors %}
+                            {{ form.amount(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.amount.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.amount(class="form-control", placeholder="Amount (£)") }}
+                        {% endif %}
+
+                    </div>
+
+                    
+
+
+                    <div class="form-outline mb-4">
+                        
+                        {{ form.submit(class="btn btn-outline-info expense-form-button")}}
+                    </div>
+                    
+                    
+                        
+                    
+                    
+                    
+                           
+                  
+
+                    
+                    
+
+                </fieldset>
+
+                
+
+            </form>
+
+    {% else %}
+        <p>Login to add new expenses</p>        
+
+    {%endif%}
+
 </div>
 
 <style>

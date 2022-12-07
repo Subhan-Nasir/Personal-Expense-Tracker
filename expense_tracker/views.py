@@ -1,33 +1,59 @@
 from flask import Blueprint, render_template, redirect, url_for, redirect, flash
-from expense_tracker.forms import RegistrationForm, LoginForm
+from expense_tracker.forms import RegistrationForm, LoginForm, ExpenseForm
 from .extensions import db, bcrypt
 from expense_tracker.models import User, Expenses
 from flask_login import login_user, current_user, logout_user
+import datetime
 
 views = Blueprint("views",__name__)
 
-expenses = [
+dummy_expenses = [
     {
-        "name": "Rent",
+        "name": "Example 1",
+        "category": "Rent",
         "amount": 1000,
-        "date": "1/1/22"
+        "date": datetime.date(2022,1,1)
     },
     {
-        "name": "Electricity",
+        "name": "Example 2",
+        "category": "Other",
         "amount": 200,
-        "date": "2/2/22"
+        "date": datetime.date(2022,2,2)
     },
     {
-        "name": "Fuel",
+        "name": "Example 3",
+        "category": "Food",
         "amount": 100,
-        "date": "3/3/22"
+        "date": datetime.date(2022,3,3)
     }
 ]
 
 
-@views.route("/")
+@views.route("/", methods = ["GET", "POST"])
 def home():
-    return render_template("home.html", expenses = expenses)
+    form = ExpenseForm()
+
+    if form.validate_on_submit():
+        print("-"*50)
+        print("NEW EXPENSE:")
+        print(f"{form.name.data} - {form.category.data} - {form.amount.data} - {form.date.data}")
+        print("-"*50)
+
+        new_expense = Expenses(
+            name=form.name.data,
+            category = form.category.data,
+            amount = form.amount.data,
+            date = form.date.data,
+            user = current_user)
+
+        db.session.add(new_expense)
+        db.session.commit()
+
+    if current_user.is_authenticated:
+        user_expenses = current_user.expenses
+        return render_template("home.html", expenses = user_expenses, form=form)
+    else:   
+        return render_template("home.html", expenses = dummy_expenses, form=form)
 
 
 @views.route("/about")

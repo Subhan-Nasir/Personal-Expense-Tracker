@@ -105,18 +105,19 @@ h6 {
 .bg-glass {
   background-color: hsla(240, 24%, 93%, 0.744) !important;
   backdrop-filter: saturate(200%) blur(25px);
+  border-radius: 5px;
+  box-shadow: 0 9px 50px hsla(20, 67%, 75%, 0.31);
 }
 
 .form-name {
   font-size: 2.5vw;
-  color: rgb(9, 9, 62);
-  
+  color: rgb(9, 9, 62);  
 
 }
 
 /* ------------------------------------------------------------------------------------- */
 
-form {
+.authentication-form {
   width: 450px;
   /* min-height: 500px; */
   min-height: 360px;
@@ -137,6 +138,7 @@ form {
 
 }
 
+
 fieldset {
   padding-left: 5%;
   padding-right: 5%;
@@ -145,8 +147,7 @@ fieldset {
 
 .submit-area {
   border: 3px solid red;
-  margin: 0;
-  
+  margin: 0;  
 
 }
 /* form Container
@@ -172,6 +173,12 @@ form .con {
 } */
 
 /* inputs form  */
+
+label {
+  margin: 0;
+
+}
+
 .form-control {
 
   width: 100%;
@@ -232,6 +239,63 @@ form .con {
 }
 
 .submit-button:hover {
+  background: darkblue
+  
+}
+
+.expense-form {
+  margin-top: 2%;
+  text-align: left;
+ 
+  /* display: block; */
+  /* width: 450px;
+  height: 360px; */
+  
+
+}
+
+.expense-form-fields {
+  display: flex;
+  flex:1;
+  gap: 2%;
+  justify-content: center;
+  
+
+}
+
+/* .expense-form-fields > * {
+  height: 100px;
+} */
+
+.expense-form-button {
+  width: 150px;
+  height: 100%; 
+
+  margin-top: 2%;
+ 
+
+  /* padding: 14.5px 0px 15px 9px; */
+
+  /* padding: 14.5px 0px 15px 9px; */
+  
+  /* border-radius: 5px 0px 0px 5px; */
+
+  font-size: 16px;
+  color: black;
+
+  outline: none;
+  border: none;
+
+  
+
+  border-radius: 5px;
+  
+  background-color: white;
+
+
+}
+
+.expense-form-button:hover {
   background: darkblue
   
 }

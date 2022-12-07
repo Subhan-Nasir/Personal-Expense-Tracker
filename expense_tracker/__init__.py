@@ -18,10 +18,10 @@ def create_app():
     from expense_tracker.views import views
     app.register_blueprint(views, url_prefix="/")
 
-    db.create_all()
+    # db.create_all()
 
-    # with app.app_context():
-    #     db.create_all()
+    with app.app_context():
+        db.create_all()
 
     return app        
 

@@ -23,7 +23,7 @@ class Expenses(db.Model):
     category = db.Column(db.String(50), nullable = False)
     amount = db.Column(db.Float, nullable = False)
 
-    date_used = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
+    date = db.Column(db.Date, nullable = False, default = datetime.utcnow)
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 

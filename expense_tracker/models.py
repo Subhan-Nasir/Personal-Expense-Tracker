@@ -28,7 +28,7 @@ class Expenses(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
     def __repr__(self):
-        return f"User: {self.id} - {self.category} - {self.date} - {self.name} - {self.amount}"
+        return f"User: {self.user_id} - {self.category} - {self.date} - {self.name} - {self.amount}"
    
 
     

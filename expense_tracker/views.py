@@ -4,6 +4,12 @@ from .extensions import db, bcrypt
 from expense_tracker.models import User, Expenses
 from flask_login import login_user, current_user, logout_user
 import datetime
+import json
+import pandas as pd
+import plotly
+import plotly.express as px
+from pprint import pprint
+
 
 views = Blueprint("views",__name__)
 
@@ -29,9 +35,19 @@ dummy_expenses = [
 ]
 
 
+
 @views.route("/", methods = ["GET", "POST"])
 def home():
     form = ExpenseForm()
+   
+    df = pd.DataFrame({
+        "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
+        "Amount": [4, 1, 2, 2, 4, 5],
+        "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
+    })
+
+    fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     if form.validate_on_submit():
         print("-"*50)
@@ -51,9 +67,16 @@ def home():
 
     if current_user.is_authenticated:
         user_expenses = current_user.expenses
-        return render_template("home.html", expenses = user_expenses, form=form)
+        print("-"*100)
+        pprint(user_expenses)
+        print("-"*100)
+        
+        
+        
+
+        return render_template("home.html", expenses = user_expenses, form=form, graphJSON=graphJSON)
     else:   
-        return render_template("home.html", expenses = dummy_expenses, form=form)
+        return render_template("home.html", expenses = dummy_expenses, form=form, graphJSON=graphJSON)
 
 
 @views.route("/about")
@@ -118,3 +141,24 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for("views.home"))
+
+@views.route("/expenses/delete/<int:id>", methods=["POST"])
+def delete_expense(id):
+    expense_to_delte = Expenses.query.get_or_404(id)
+
+    try:
+        db.session.delete(expense_to_delte)
+        db.session.commit()
+
+        print("-"*100)
+        print(f"need to delete expense: ID - {expense_to_delte.id} | NAME - {expense_to_delte.name}")
+        print("-"*100)
+
+
+        flash("Expense deleted","success")
+        return redirect(url_for("views.home"))
+
+    except:
+        flash("There was an error deleting that expense, please try again","danger")
+        return redirect(url_for("views.home"))
+

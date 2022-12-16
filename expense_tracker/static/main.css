@@ -84,10 +84,20 @@ h6 {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 5%;
+  padding-top: 0%;
 
 }
 
+.delete-button {
+  
+  font-size: 13px;
+}
+
+
+
+.table td {
+  vertical-align: middle;
+}
 
 /* .form-control {
   font-size: 1.75vw;

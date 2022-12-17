@@ -5,11 +5,10 @@ from expense_tracker.models import User, Expenses
 from flask_login import login_user, current_user, logout_user
 import datetime
 import json
-import pandas as pd
-import plotly
-import plotly.express as px
 from pprint import pprint
-
+from sqlalchemy import func
+from sqlalchemy import text
+from .helper_functions import create_expenses_chart
 
 views = Blueprint("views",__name__)
 
@@ -23,13 +22,13 @@ dummy_expenses = [
     {
         "name": "Example 2",
         "category": "Other",
-        "amount": 200,
+        "amount": 1000,
         "date": datetime.date(2022,2,2)
     },
     {
         "name": "Example 3",
         "category": "Food",
-        "amount": 100,
+        "amount": 1000,
         "date": datetime.date(2022,3,3)
     }
 ]
@@ -38,16 +37,7 @@ dummy_expenses = [
 
 @views.route("/", methods = ["GET", "POST"])
 def home():
-    form = ExpenseForm()
-   
-    df = pd.DataFrame({
-        "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-        "Amount": [4, 1, 2, 2, 4, 5],
-        "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-    })
-
-    fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    form = ExpenseForm()   
 
     if form.validate_on_submit():
         print("-"*50)
@@ -66,16 +56,32 @@ def home():
         db.session.commit()
 
     if current_user.is_authenticated:
-        user_expenses = current_user.expenses
-        print("-"*100)
-        pprint(user_expenses)
-        print("-"*100)
+        user_expenses = current_user.expenses       
         
-        
+        expense_categories = form.category.choices
+        summary = {"category": [],
+                    "expense_sum": []}
+        for item in expense_categories:
+            result = db.session.query(func.sum(Expenses.amount).label('category_sum')).filter_by(category=item, user_id=current_user.id).all()
+            # Query returns a list of touples, result[0][0] gets the actual number for <category_sum>
+            summary["category"].append(item)
+            summary["expense_sum"].append(result[0][0] if result[0][0] != None else 0)
+
+          
+        pprint(summary)
+        graphJSON = create_expenses_chart(summary=summary, title="Your Expense Summary")
+       
         
 
         return render_template("home.html", expenses = user_expenses, form=form, graphJSON=graphJSON)
-    else:   
+    else:
+        expense_categories = form.category.choices
+        example_summary = {"category": expense_categories,
+                    "expense_sum": [1000 for i in expense_categories]}
+        
+        graphJSON = create_expenses_chart(summary=example_summary, title="An Example Chart")
+                
+           
         return render_template("home.html", expenses = dummy_expenses, form=form, graphJSON=graphJSON)
 
 

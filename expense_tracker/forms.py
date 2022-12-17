@@ -48,7 +48,7 @@ class ExpenseForm(FlaskForm):
     category = SelectField("Category", choices=["Rent", "Food", "Other"], default="Other",validators=[DataRequired()])
 
     amount = DecimalField("Amount", validators=[DataRequired(), NumberRange(
-        min=0, message="Cannot enter negative numbers")])
+        min=0, message="Cannot enter negative numbers"), ])
     date = DateField("Date", format='%Y-%m-%d', validators=[DataRequired()])
 
     submit = SubmitField("Save")

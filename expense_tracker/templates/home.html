@@ -40,7 +40,7 @@
                 <td class="text-left">{{expense.name}}</td>
                 <td class="text-left">{{expense.category}}</td>
                 <td class="text-left">{{expense.date.strftime("%a - %#d %b %Y")}}</td>
-                <td class="text-right">£{{expense.amount}}</td>
+                <td class="text-right">{{ "£{:,.2f}".format(expense.amount) }}</td>
                 {% if current_user.is_authenticated %}
                     
                     <td class="text-right">
@@ -173,12 +173,46 @@
 
 <div class="row bg-glass expense-form justify-content-center align-items-center">
     <legend class="border-bottom pt-5 mb-4 text-center"><b>Breakdown</b></legend>
-    <div calss="align-items-center" style="height:auto; width: auto;">
-        <p>Monthly Spendings: £00.00</p>
-        <p>Monthly Spendings: £00.00</p>
-        <p>Monthly Spendings: £00.00</p>
-        <p>Monthly Spendings: £00.00</p>
-    </div>
+
+    {# <div class="align-items-center" style="height:auto; width: auto;">
+        <p><b>Recent Expenses:</b></p>
+        <p class="text-right">Past Week: {{ "£{:,.2f}".format(recent_expenses.past_week) }}</p>
+        <p class="text-right">Past 30 days: {{ " £{:,.2f}".format(recent_expenses.past_month) }}</p>
+        <p class="text-right">Past Year: {{ " £{:,.2f}".format(recent_expenses.past_year) }}</p>
+    </div> #}
+
+    <table>
+        <thead>
+            <tr>
+                <th scope="col" colspan="2" class="text-center">Recent Expenses:</th>
+                {# <th scope="col" class="text-center" style="background:blue"></th> #}
+            </tr>
+
+        </thead>
+
+        <tbody>
+            <tr>
+                <td class="text-right">Past Week:&nbsp&nbsp</td>
+                <td class="text-right">{{ "£{:,.2f}".format(recent_expenses.past_week) }}</td>
+            
+            </tr>
+            <tr>
+                <td class="text-right">Past 30 days:&nbsp&nbsp </td>
+                <td class="text-right">{{ " £{:,.2f}".format(recent_expenses.past_month) }}</td>
+            
+            </tr>
+            <tr>
+                <td class="text-right">Past Year:&nbsp&nbsp </td>
+                <td class="text-right">{{ " £{:,.2f}".format(recent_expenses.past_year) }}</td>
+            
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+
     <div id = "chart" style="height: 400px; margin: 1rem; width: 600px;"></div>
 </div>
 
@@ -187,7 +221,7 @@
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>-->
     <script type='text/javascript'>
         var graphs = {{ graphJSON | safe}};
-        Plotly.plot('chart', graphs, {});
+        Plotly.plot('chart', graphs, );
     </script>
 
 

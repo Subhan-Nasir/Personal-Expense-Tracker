@@ -43,9 +43,17 @@ class LoginForm(FlaskForm):
 class ExpenseForm(FlaskForm):
 
     name = StringField("Name", validators=[DataRequired()])
-    # category = StringField("Category", validators=[DataRequired()])
+    
+    choice_list = sorted(["Housing", "Transportation", "Food", "Utilities", "Clothing",
+                   "Healthcare", "Insurance", "Household Items",
+                   "Personal", "Debt", "Retirement,", "Education", "Savings", "Gifts and Donations"]) + ["Other"]
 
-    category = SelectField("Category", choices=["Rent", "Food", "Other"], default="Other",validators=[DataRequired()])
+
+
+
+    category = SelectField("Category", 
+                            choices=choice_list, 
+                            default="Other", validators=[DataRequired()])
 
     amount = DecimalField("Amount", validators=[DataRequired(), NumberRange(
         min=0, message="Cannot enter negative numbers"), ])

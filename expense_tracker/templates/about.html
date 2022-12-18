@@ -2,8 +2,23 @@
 {% block content %}
 
     <title>About</title>
-    <h1>About Page</h1>
-    <p> This is the about section of the website</p> 
+    
+    <div class="row justify-content-center pt-5 bg-glass">
+        <legend class="border-bottom mb-4 text-center"><h2>About Us</h2></legend>
+
+        
+        
+        <ul>
+            <li>This website lets you keep track of all your expenses.</li>
+            <li>See a breakdown of your spending to help you find ways to save money.</li>
+            <li>See how much money you have spent oveer the past week, month and year.</li>
+            {% if not current_user.is_authenticated %}
+                <li><a href="{{url_for('views.login')}}">Login</a> or <a href="{{url_for('views.register')}}">Register</a> to get started!</li>
+            {% endif %}
+        </ul>
+        <br>
+
+    </div>
         
 
 
